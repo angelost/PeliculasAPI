@@ -48,32 +48,6 @@ namespace PeliculasAPI.Controllers
         public async Task<ActionResult> Post([FromForm] PeliculaCreacionDTO peliculaCreacionDTO)
         {
             var pelicula = mapper.Map<Pelicula>(peliculaCreacionDTO);
-            return Ok();
-
-            //if (peliculaCreacionDTO.Poster != null)
-            //{
-            //    using (var memoryStream = new MemoryStream())
-            //    {
-            //        await peliculaCreacionDTO.Poster.CopyToAsync(memoryStream);
-            //        var contenido = memoryStream.ToArray();
-            //        var extension = Path.GetExtension(peliculaCreacionDTO.Poster.FileName);
-            //        pelicula.Poster = await almacenadorArchivos.GuardarArchivo(contenido, extension, contenedor, peliculaCreacionDTO.Poster.ContentType);
-            //    }
-            //}
-
-            //context.Add(pelicula);
-            //await context.SaveChangesAsync();
-            //var peliculaDTO = mapper.Map<PeliculaDTO>(pelicula);
-            //return new CreatedAtRouteResult("obtenerPelicula", new { id = pelicula.Id }, peliculaDTO);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromForm] PeliculaCreacionDTO peliculaCreacionDTO)
-        {
-            var PeliculaDB = await context.Peliculas.FirstOrDefaultAsync(x => x.Id == id);
-            if (PeliculaDB == null) { return NotFound(); }
-
-            PeliculaDB = mapper.Map(peliculaCreacionDTO, PeliculaDB);
 
             if (peliculaCreacionDTO.Poster != null)
             {
@@ -82,9 +56,52 @@ namespace PeliculasAPI.Controllers
                     await peliculaCreacionDTO.Poster.CopyToAsync(memoryStream);
                     var contenido = memoryStream.ToArray();
                     var extension = Path.GetExtension(peliculaCreacionDTO.Poster.FileName);
-                    PeliculaDB.Poster = await almacenadorArchivos.EditarArchivo(contenido, extension, contenedor, PeliculaDB.Poster, peliculaCreacionDTO.Poster.ContentType);
+                    pelicula.Poster = await almacenadorArchivos.GuardarArchivo(contenido, extension, contenedor, peliculaCreacionDTO.Poster.ContentType);
                 }
             }
+
+            AsignarOrdenActores(pelicula);
+            context.Add(pelicula);
+            await context.SaveChangesAsync();
+            var peliculaDTO = mapper.Map<PeliculaDTO>(pelicula);
+            return new CreatedAtRouteResult("obtenerPelicula", new { id = pelicula.Id }, peliculaDTO);
+        }
+
+        private void AsignarOrdenActores(Pelicula pelicula)
+        {
+            if(pelicula.PeliculasActores != null)
+            {
+                for (int i = 0; i < pelicula.PeliculasActores.Count; i++)
+                {
+                    pelicula.PeliculasActores[i].Orden = i;
+                }
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(int id, [FromForm] PeliculaCreacionDTO peliculaCreacionDTO)
+        {
+            var peliculaDB = await context.Peliculas
+                .Include(x => x.PeliculasActores)
+                .Include(x => x.PeliculasGeneros)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (peliculaDB == null) { return NotFound(); }
+
+            peliculaDB = mapper.Map(peliculaCreacionDTO, peliculaDB);
+
+            if (peliculaCreacionDTO.Poster != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await peliculaCreacionDTO.Poster.CopyToAsync(memoryStream);
+                    var contenido = memoryStream.ToArray();
+                    var extension = Path.GetExtension(peliculaCreacionDTO.Poster.FileName);
+                    peliculaDB.Poster = await almacenadorArchivos.EditarArchivo(contenido, extension, contenedor, peliculaDB.Poster, peliculaCreacionDTO.Poster.ContentType);
+                }
+            }
+
+            AsignarOrdenActores(peliculaDB);
 
             await context.SaveChangesAsync();
             return NoContent();

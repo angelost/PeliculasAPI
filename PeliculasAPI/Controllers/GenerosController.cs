@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PeliculasAPI.DTOs;
 using PeliculasAPI.Entidades;
 
@@ -10,9 +9,9 @@ namespace PeliculasAPI.Controllers
     [Route("api/generos")]
     public class GenerosController : CustomBaseController
     {
-        public GenerosController(ApplicationDbContext context, IMapper mapper) : base(context, mapper)
-        {
-            
+        public GenerosController(ApplicationDbContext context, IMapper mapper) 
+            :base(context, mapper)
+        {            
         }
 
         [HttpGet]

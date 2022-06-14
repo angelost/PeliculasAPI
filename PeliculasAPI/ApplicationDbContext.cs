@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PeliculasAPI.Entidades;
+using System.Security.Claims;
 
 namespace PeliculasAPI
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions options): base(options)
         {
@@ -21,7 +24,41 @@ namespace PeliculasAPI
         }
 
         private void SeedData(ModelBuilder modelBuilder)
-        {            
+        {
+
+            var rolAdminId = "8fb701e1-4d37-44b9-bd22-f0de4f6433b1";
+            var usuarioAdminId = "fd95e2cf-fb2a-407f-b997-11f53be6b1b7";
+
+            var rolAdmin = new IdentityRole()
+            {
+                Id = rolAdminId,
+                Name = "Admin",
+                NormalizedName = "Admin"
+            };
+
+            var passwordHasher = new PasswordHasher<IdentityUser>();
+
+            var username = "angelo@live.com";
+
+            var usuarioAdmin = new IdentityUser()
+            {
+                Id = usuarioAdminId,
+                UserName = username,
+                NormalizedUserName = username,
+                Email = username,
+                NormalizedEmail = username,
+                PasswordHash = passwordHasher.HashPassword(null, "Aa123456!")
+            };
+
+            //modelBuilder.Entity<IdentityUser>().HasData(usuarioAdmin);
+            //modelBuilder.Entity<IdentityRole>().HasData(rolAdmin);
+            //modelBuilder.Entity<IdentityUserClaim<string>>().HasData(new IdentityUserClaim<string>()
+            //{
+            //    Id = 1,
+            //    ClaimType = ClaimTypes.Role,
+            //    UserId = usuarioAdminId,
+            //    ClaimValue = "Admin"
+            //});
 
             var aventura = new Genero() { Id = 4, Nombre = "Aventura" };
             var animation = new Genero() { Id = 5, Nombre = "Animación" };

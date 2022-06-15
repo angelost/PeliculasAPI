@@ -12,7 +12,7 @@ namespace PeliculasAPI.Tests
 {
     public class BasePruebas
     {
-        protected ApplicationDbContext ConstruirContext2(string nombreDB)
+        protected ApplicationDbContext ConstruirContext(string nombreDB)
         {
             var opciones = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(nombreDB).Options;

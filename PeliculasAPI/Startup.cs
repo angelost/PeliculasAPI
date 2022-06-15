@@ -27,6 +27,8 @@ namespace PeliculasAPI
 
             services.AddSingleton<GeometryFactory>(NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326));
 
+            services.AddScoped<PeliculaExisteAttribute>();
+
             services.AddSingleton(provider =>            
                 new MapperConfiguration(config =>
                 {

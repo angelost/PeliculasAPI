@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using PeliculasAPI;
@@ -12,9 +13,10 @@ using PeliculasAPI;
 namespace PeliculasAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220614215441_TablaReviews")]
+    partial class TablaReviews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -242,7 +244,7 @@ namespace PeliculasAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Actores", (string)null);
+                    b.ToTable("Actores");
 
                     b.HasData(
                         new
@@ -280,7 +282,7 @@ namespace PeliculasAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Generos", (string)null);
+                    b.ToTable("Generos");
 
                     b.HasData(
                         new
@@ -329,7 +331,7 @@ namespace PeliculasAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Peliculas", (string)null);
+                    b.ToTable("Peliculas");
 
                     b.HasData(
                         new
@@ -387,7 +389,7 @@ namespace PeliculasAPI.Migrations
 
                     b.HasIndex("PeliculaId");
 
-                    b.ToTable("PeliculasActores", (string)null);
+                    b.ToTable("PeliculasActores");
 
                     b.HasData(
                         new
@@ -439,7 +441,7 @@ namespace PeliculasAPI.Migrations
 
                     b.HasIndex("PeliculaId");
 
-                    b.ToTable("PeliculasGeneros", (string)null);
+                    b.ToTable("PeliculasGeneros");
 
                     b.HasData(
                         new
@@ -501,7 +503,7 @@ namespace PeliculasAPI.Migrations
 
                     b.HasIndex("SalaDeCineId");
 
-                    b.ToTable("PeliculasSalasDeCines", (string)null);
+                    b.ToTable("PeliculasSalasDeCines");
                 });
 
             modelBuilder.Entity("PeliculasAPI.Entidades.Review", b =>
@@ -530,7 +532,7 @@ namespace PeliculasAPI.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("PeliculasAPI.Entidades.SalaDeCine", b =>
@@ -551,7 +553,7 @@ namespace PeliculasAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SalaDeCines", (string)null);
+                    b.ToTable("SalaDeCines");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -63,7 +63,7 @@ namespace PeliculasAPI.Tests.PruebasUnitarias
             var respuesta = await controller.Filtrar(filtroDTO);
             var peliculas = respuesta.Value;
             Assert.AreEqual(1, peliculas?.Count);
-            Assert.AreEqual(tituloPelicula, peliculas[0].Titulo);
+            Assert.AreEqual(tituloPelicula, peliculas?[0].Titulo);
         }
 
         [TestMethod]
@@ -220,7 +220,7 @@ namespace PeliculasAPI.Tests.PruebasUnitarias
 
             var contexto2 = ConstruirContext(nombreBD);
             var peliculasDB = contexto2.Peliculas.ToList();
-            Assert.AreEqual(peliculasDB.Count, peliculas.Count);
+            Assert.AreEqual(peliculasDB.Count, peliculas?.Count);
             Assert.AreEqual(1, mock.Invocations.Count);
         }
     }

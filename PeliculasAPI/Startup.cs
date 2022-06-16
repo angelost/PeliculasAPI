@@ -39,7 +39,11 @@ namespace PeliculasAPI
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 sqlServerOptions => sqlServerOptions.UseNetTopologySuite()));
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(FiltroErrores));
+            })
+                .AddNewtonsoftJson();
             services.AddEndpointsApiExplorer();
 
             services.AddIdentity<IdentityUser, IdentityRole>()

@@ -42,7 +42,7 @@ namespace PeliculasAPI.Tests.PruebasUnitarias
             var respuesta = await controller.Post(peliculaId, reviewCreacionDTO);
 
             var valor = respuesta as IStatusCodeActionResult;
-            Assert.AreEqual(400, valor.StatusCode.Value);
+            Assert.AreEqual(400, valor?.StatusCode.Value);
         }
 
         [TestMethod]
